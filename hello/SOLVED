@@ -1,0 +1,78 @@
+
+
+The BIOS Service chosen for this project is the service that Reads the Real-Time clock info (RTC). The AH register needs to be set to 0x02, and the bios call is int $0x1a.
+
+There are several RTC Services in the Bios, this specific call reads only the RTC Time, and returns the time in the cx and dx registers, returning:
+- Hours in CH
+- Minutes in CL
+- Seconds in DH
+- Daylight Savings option Time optionin DL
+
+reference:
+http://www.techhelpmanual.com/247-int_1ah_02h__read_time_from_real_time_clock.html
+
+
+
+In the qemu virtualization, the way we set up the RTC date for easy test and debugging is with the flag -rtc.
+For this project we used the following qemu command:
+
+qemu-system-i386 -monitor stdio -drive format=raw,file=hello.bin -net none -rtc base=2025-06-10T20:12:34
+
+The command make hello.bin/run-rtc was added to the makefile to call the qemu command with these flags.
+
+Additionaly, the flag "-monitor stdio" is also present in the qemu command. This flag allows us to obtain more data about the simulation, and interact with it via the terminal. For this implementation, the command "info registers" is specialy useful, since it shows the values held in registers simulated by the VM.
+To see the values of the registers in a specific part of the code, we halt the processor by using the "halt_debug" function, and ask "info registers" in the qemu prompt.
+
+
+Two solutions were implemented for this project:
+
+1. Function get_time_and_print:
+
+This function call can be selected by setting the C_PRINT diretive to 0 in the main.c file and rebuilding the project.
+
+The function configures and calls for the BIOS service of reading the RTC Time, then it changes to TTY mode and starts the manipulating the registers to read the data. We use the register BL as buffer for printing.
+
+For each 8bit register (CH, CL, DH, DL) we:
+- Copy the data to BL
+- Apply a mask selecting the 4 most significant bits
+- Right Shift the bits 4 times, so that they become the 4 less significant bits
+- Call the print_hex function
+- Copy the data to BL again
+- Apply a mask selecting the 4 less significant bits
+- Call the print_hex function
+
+For printing numbers we need to offset (add) 0x30 to the value, while for printing letters we offset 0x57. (This is necessary to make sure that the value of the char representing that data is correct) 
+
+The print_hex function is capable of printing hexadecimal characters, but since the RTC time is only numbers, the alphabet characters are never printed.
+If we choose to call the Read RTC service bios (by setting the AH to 0x02 in line 44 of the libc.S file), we will see the number of ticks since midnight represented in a hexadecimal number. (Each second has circa 18.2 ticks).
+
+
+2. Function get_time
+
+This function call can be selected by setting the C_PRINT diretive to 1 in the main.c file and rebuilding the project.
+
+The function configures and calls for the BIOS service of reading the RTC Time, and saves the data in the %EAX register to be returned to the c function.
+We do that by shifting the ECX register 16 bits to the right (thus filling the first 16 bits of the ECX register), copying the data from DX o CX (thus filling the last 16 bits of the ECX register), and copying this data to the EAX register to be retuned to the C code. 
+
+In the C code two code adaptions were necessary to make sure the value can be printed:
+    1. Setting the rtc_time as a global variable (Line 16 in main.c)
+    2. Linking the pointer value to the register edx. (Line 15 in main.c)
+
+Setting the rtc_time as a global variable made sure that the gcc compiler would not manipulate the register that holds the rtc data, thus not corrupting it.
+
+Setting the pointer to the EDX register in the global scope was necessary because the my_printf function manipulates the EBX register for printing data, and without this configuration the C compiler would use the same EBX register to hold the value of this pointer. This would result in the my_printf function corrupting the data and printing gibberish. By making sure the data is held in the EDX register (not affected by the my_printf function), we make sure that the data can be stored safely and printed accordingly. There is a compiler warning that warns us that the EDX register can be changed by function calls, and this strategy needs to be evaluated for each different implementation. 
+
+For printing the data we use the same masking + shifting + offseting bits strategy and print the RTC time.
+
+
+Implementing Both solutions made the binary bigger, and it almost did not fit the 512 bytes limit. If it is necessary to implement more functionalities in the bootloader, it will be necessary to erase one implementation. 
+
+
+For this implementation, we also tried to use the remote gdb option of qemu (By running something like: qemu-system-i386 -S -gdb tcp::2000 -drive format=raw,file=hello.bin -net none). However, since the binary is flat the gdb can not find symbols which it can use, and debuging the code in this manner is not feasible.
+
+We use the objdump to check the final binary file:
+objdump -M intel -b binary -m i8086 -D hello.bin > objdump.txt
+
+Additional References:
+https://www.plantation-productions.com/Webster/www.artofasm.com/DOS/pdf/ch13.pdf
+https://en.wikipedia.org/wiki/BIOS_interrupt_call

@@ -1,0 +1,155 @@
+
+hello.bin:     file format binary
+
+
+Disassembly of section .data:
+
+00000000 <.data>:
+   0:	bc 00 7c             	mov    sp,0x7c00
+   3:	66 e8 03 00 00 00    	calld  0xc
+   9:	f4                   	hlt
+   a:	eb fd                	jmp    0x9
+   c:	66 55                	push   ebp
+   e:	66 89 e5             	mov    ebp,esp
+  11:	66 83 e4 f0          	and    esp,0xfffffff0
+  15:	66 b9 f1 7d 00 00    	mov    ecx,0x7df1
+  1b:	66 e8 07 01 00 00    	calld  0x128
+  21:	66 e8 19 01 00 00    	calld  0x140
+  27:	66 a3 00 7e          	mov    ds:0x7e00,eax
+  2b:	66 c1 e8 1c          	shr    eax,0x1c
+  2f:	66 83 c0 30          	add    eax,0x30
+  33:	67 88 02             	mov    BYTE PTR [edx],al
+  36:	66 89 d1             	mov    ecx,edx
+  39:	66 e8 e9 00 00 00    	calld  0x128
+  3f:	66 0f b6 06 03 7e    	movzx  eax,BYTE PTR ds:0x7e03
+  45:	66 83 e0 0f          	and    eax,0xf
+  49:	66 83 c0 30          	add    eax,0x30
+  4d:	67 88 02             	mov    BYTE PTR [edx],al
+  50:	66 89 d1             	mov    ecx,edx
+  53:	66 e8 cf 00 00 00    	calld  0x128
+  59:	66 b9 fa 7d 00 00    	mov    ecx,0x7dfa
+  5f:	66 e8 c3 00 00 00    	calld  0x128
+  65:	66 a1 00 7e          	mov    eax,ds:0x7e00
+  69:	66 c1 e8 14          	shr    eax,0x14
+  6d:	66 83 e0 0f          	and    eax,0xf
+  71:	66 83 c0 30          	add    eax,0x30
+  75:	67 88 02             	mov    BYTE PTR [edx],al
+  78:	66 89 d1             	mov    ecx,edx
+  7b:	66 e8 a7 00 00 00    	calld  0x128
+  81:	66 0f b7 06 02 7e    	movzx  eax,WORD PTR ds:0x7e02
+  87:	66 83 e0 0f          	and    eax,0xf
+  8b:	66 83 c0 30          	add    eax,0x30
+  8f:	67 88 02             	mov    BYTE PTR [edx],al
+  92:	66 89 d1             	mov    ecx,edx
+  95:	66 e8 8d 00 00 00    	calld  0x128
+  9b:	66 b9 fa 7d 00 00    	mov    ecx,0x7dfa
+  a1:	66 e8 81 00 00 00    	calld  0x128
+  a7:	66 a1 00 7e          	mov    eax,ds:0x7e00
+  ab:	66 c1 e8 0c          	shr    eax,0xc
+  af:	66 83 e0 0f          	and    eax,0xf
+  b3:	66 83 c0 30          	add    eax,0x30
+  b7:	67 88 02             	mov    BYTE PTR [edx],al
+  ba:	66 89 d1             	mov    ecx,edx
+  bd:	66 e8 65 00 00 00    	calld  0x128
+  c3:	66 a1 00 7e          	mov    eax,ds:0x7e00
+  c7:	66 c1 e8 08          	shr    eax,0x8
+  cb:	66 83 e0 0f          	and    eax,0xf
+  cf:	66 83 c0 30          	add    eax,0x30
+  d3:	67 88 02             	mov    BYTE PTR [edx],al
+  d6:	66 89 d1             	mov    ecx,edx
+  d9:	66 e8 49 00 00 00    	calld  0x128
+  df:	66 b9 fc 7d 00 00    	mov    ecx,0x7dfc
+  e5:	66 e8 3d 00 00 00    	calld  0x128
+  eb:	66 0f b6 06 00 7e    	movzx  eax,BYTE PTR ds:0x7e00
+  f1:	c0 e8 04             	shr    al,0x4
+  f4:	66 83 c0 30          	add    eax,0x30
+  f8:	67 88 02             	mov    BYTE PTR [edx],al
+  fb:	66 89 d1             	mov    ecx,edx
+  fe:	66 e8 24 00 00 00    	calld  0x128
+ 104:	66 0f b6 06 00 7e    	movzx  eax,BYTE PTR ds:0x7e00
+ 10a:	66 83 e0 0f          	and    eax,0xf
+ 10e:	66 83 c0 30          	add    eax,0x30
+ 112:	67 88 02             	mov    BYTE PTR [edx],al
+ 115:	66 89 d1             	mov    ecx,edx
+ 118:	66 e8 0a 00 00 00    	calld  0x128
+ 11e:	66 b8 00 00 00 00    	mov    eax,0x0
+ 124:	66 c9                	leaved
+ 126:	66 c3                	retd
+ 128:	89 cb                	mov    bx,cx
+ 12a:	b4 0e                	mov    ah,0xe
+ 12c:	be 00 00             	mov    si,0x0
+ 12f:	8a 00                	mov    al,BYTE PTR [bx+si]
+ 131:	3c 00                	cmp    al,0x0
+ 133:	74 07                	je     0x13c
+ 135:	cd 10                	int    0x10
+ 137:	83 c6 01             	add    si,0x1
+ 13a:	eb f3                	jmp    0x12f
+ 13c:	89 f0                	mov    ax,si
+ 13e:	66 c3                	retd
+ 140:	b4 02                	mov    ah,0x2
+ 142:	cd 1a                	int    0x1a
+ 144:	66 c1 e1 10          	shl    ecx,0x10
+ 148:	89 d1                	mov    cx,dx
+ 14a:	66 89 c8             	mov    eax,ecx
+ 14d:	66 c3                	retd
+ 14f:	b4 00                	mov    ah,0x0
+ 151:	cd 1a                	int    0x1a
+ 153:	b4 0e                	mov    ah,0xe
+ 155:	88 eb                	mov    bl,ch
+ 157:	80 e3 f0             	and    bl,0xf0
+ 15a:	c0 eb 04             	shr    bl,0x4
+ 15d:	66 e8 70 00 00 00    	calld  0x1d3
+ 163:	88 eb                	mov    bl,ch
+ 165:	80 e3 0f             	and    bl,0xf
+ 168:	66 e8 65 00 00 00    	calld  0x1d3
+ 16e:	66 e8 59 00 00 00    	calld  0x1cd
+ 174:	88 cb                	mov    bl,cl
+ 176:	80 e3 f0             	and    bl,0xf0
+ 179:	c0 eb 04             	shr    bl,0x4
+ 17c:	66 e8 51 00 00 00    	calld  0x1d3
+ 182:	88 cb                	mov    bl,cl
+ 184:	80 e3 0f             	and    bl,0xf
+ 187:	66 e8 46 00 00 00    	calld  0x1d3
+ 18d:	66 e8 3a 00 00 00    	calld  0x1cd
+ 193:	88 f3                	mov    bl,dh
+ 195:	80 e3 f0             	and    bl,0xf0
+ 198:	c0 eb 04             	shr    bl,0x4
+ 19b:	66 e8 32 00 00 00    	calld  0x1d3
+ 1a1:	88 f3                	mov    bl,dh
+ 1a3:	80 e3 0f             	and    bl,0xf
+ 1a6:	66 e8 27 00 00 00    	calld  0x1d3
+ 1ac:	66 e8 1b 00 00 00    	calld  0x1cd
+ 1b2:	88 d3                	mov    bl,dl
+ 1b4:	80 e3 f0             	and    bl,0xf0
+ 1b7:	c0 eb 04             	shr    bl,0x4
+ 1ba:	66 e8 13 00 00 00    	calld  0x1d3
+ 1c0:	88 d3                	mov    bl,dl
+ 1c2:	80 e3 0f             	and    bl,0xf
+ 1c5:	66 e8 08 00 00 00    	calld  0x1d3
+ 1cb:	66 c3                	retd
+ 1cd:	b0 20                	mov    al,0x20
+ 1cf:	cd 10                	int    0x10
+ 1d1:	66 c3                	retd
+ 1d3:	80 fb 09             	cmp    bl,0x9
+ 1d6:	7f 04                	jg     0x1dc
+ 1d8:	eb 0b                	jmp    0x1e5
+ 1da:	66 c3                	retd
+ 1dc:	80 c3 57             	add    bl,0x57
+ 1df:	88 d8                	mov    al,bl
+ 1e1:	cd 10                	int    0x10
+ 1e3:	eb f5                	jmp    0x1da
+ 1e5:	80 c3 30             	add    bl,0x30
+ 1e8:	88 d8                	mov    al,bl
+ 1ea:	cd 10                	int    0x10
+ 1ec:	eb ec                	jmp    0x1da
+ 1ee:	f4                   	hlt
+ 1ef:	eb fd                	jmp    0x1ee
+ 1f1:	52                   	push   dx
+ 1f2:	54                   	push   sp
+ 1f3:	43                   	inc    bx
+ 1f4:	20 69 73             	and    BYTE PTR [bx+di+0x73],ch
+ 1f7:	3a 20                	cmp    ah,BYTE PTR [bx+si]
+ 1f9:	00 3a                	add    BYTE PTR [bp+si],bh
+ 1fb:	00 44 00             	add    BYTE PTR [si+0x0],al
+ 1fe:	55                   	push   bp
+ 1ff:	aa                   	stos   BYTE PTR es:[di],al
